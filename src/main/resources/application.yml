@@ -1,6 +1,6 @@
 application:
   name: haron
-  token: ODk3MTYzOTYxODU2ODMxNTU4.YWRrDQ.GyXGr5ugEDl8MMisMSjgYQ7HhhE
+  token: ODk3MTYzOTYxODU2ODMxNTU4.YWRrDQ._RaCtLoAkZyVQLr7TBNWC1qgzAc
 
 spring:
   flyway:

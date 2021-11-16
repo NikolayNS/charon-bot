@@ -9,22 +9,26 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import ru.dmitrenko.charonbot.util.PostgreSQLEnumType;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity(name = "stalker")
+@Entity(name = "person")
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
-@Table(name = "stalker")
-public class Stalker extends BaseEntity {
+@Table(name = "person")
+public class Person extends BaseEntity {
 
 	@Column(name = "steam_id", nullable = false)
 	private String steamId;
@@ -35,17 +39,22 @@ public class Stalker extends BaseEntity {
 	@Column(name = "nickname")
 	private String nickname;
 
-	@Column(name = "personal_account")
-	private BigDecimal personalAccount;
-
-	@Enumerated(value = EnumType.STRING)
-	@Column(name = "stalker_status", nullable = false)
-	@Type(type = "pgsql_enum")
-	private StalkerStatus status;
-
 	@Column(name = "description", nullable = false)
 	private String description;
 
+	@Enumerated(value = EnumType.STRING)
+	@Column(name = "person_status", nullable = false)
+	@Type(type = "pgsql_enum")
+	private PersonStatus personStatus;
+
+	@Enumerated(value = EnumType.STRING)
+	@Column(name = "party_status", nullable = false)
+	@Type(type = "pgsql_enum")
+	private PartyStatus partyStatus;
+
 	@Column(name = "print_link", nullable = false)
 	private String printLink;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
+	private Set<Task> tasks = new HashSet<>();
 }

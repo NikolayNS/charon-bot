@@ -1,20 +1,39 @@
 CREATE SEQUENCE IF NOT EXISTS hibernate_sequence;
 
-CREATE TYPE stalker_status AS ENUM
-    ('NEWCOMER', 'HUNTER', 'ACOLYTE', 'AGENT', 'WANTED', 'ENEMY', 'NOT_ACTIVE');
+CREATE TYPE person_status AS ENUM('NEWCOMER', 'HUNTER', 'ACOLYTE', 'AGENT', 'WANTED', 'ENEMY', 'NOT_ACTIVE', 'DEAD');
 
-CREATE TABLE IF NOT EXISTS stalker
+CREATE TYPE task_status AS ENUM('IN_PROGRESS', 'PROLONG', 'FAIL', 'CANCEL');
+
+CREATE TYPE party_status AS ENUM('STALKER', 'MILITARY', 'DUTY', 'FREEDOM', 'BANDIT', 'MERCURY', 'CLEAR_SKY', 'MONOLITH', 'RENEGADE', 'SMUGGLER', 'SCIENTIST');
+
+CREATE TABLE IF NOT EXISTS person
 (
-    id              uuid           not null
-        constraint stalker_pkey
+    id          uuid          not null
+        constraint person_pkey
             primary key,
-    steamId         varchar        not null,
-    name            varchar        not null,
-    status          stalker_status not null,
-    description     varchar        not null,
-    print_link      varchar        not null,
-    nickname        varchar,
-    personalAccount bigint,
-    created         timestamp      not null,
-    updated         timestamp      not null
+    steamId     varchar       not null,
+    name        varchar       not null,
+    nickname    varchar,
+    description varchar       not null,
+    status      person_status not null,
+    print_link  varchar       not null,
+    created     timestamp     not null,
+    updated     timestamp     not null
+);
+
+CREATE TABLE IF NOT EXISTS task
+(
+    id          uuid        not null
+        constraint task_pkey
+            primary key,
+    name        varchar     not null,
+    description varchar     not null,
+    start_date  timestamp   not null,
+    end_date    timestamp   not null,
+    task_status task_status not null,
+    person_id   varchar     not null
+        constraint task_person_fk
+            references person,
+    created     timestamp   not null,
+    updated     timestamp   not null
 );
