@@ -1,0 +1,30 @@
+application:
+  name: haron
+  token: ODk3MTYzOTYxODU2ODMxNTU4.YWRrDQ.GyXGr5ugEDl8MMisMSjgYQ7HhhE
+
+spring:
+  flyway:
+    schemas: public
+    validate-on-migrate: false
+    baseline-on-migrate: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  output.ansi.enabled: ALWAYS
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  datasource:
+    username: postgres
+    password: 123
+    url: jdbc:postgresql://localhost:5432/stalker_base
+    driver-class-name: org.postgresql.Driver
+    maximumPoolSize: 10
+    minimumIdle: 5
+    idleTimeout: 10000
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: TRACE
