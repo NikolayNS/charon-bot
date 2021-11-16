@@ -1,5 +1,7 @@
 package ru.dmitrenko.charonbot.model.domain;
 
+import java.util.Arrays;
+
 public enum StalkerStatus {
 	NEWCOMER("NEWCOMER"),
 	HUNTER("HUNTER"),
@@ -16,12 +18,10 @@ public enum StalkerStatus {
 	}
 
 	public static StalkerStatus fromValue(String value) {
-		for (StalkerStatus b : StalkerStatus.values()) {
-			if (String.valueOf(b.value).equals(value)) {
-				return b;
-			}
-		}
-		throw new IllegalArgumentException("Unexpected value '" + value + "'");
+		return Arrays.stream(StalkerStatus.values())
+			.filter(o -> o.value.equals(value))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException("Unexpected value '" + value + "'"));
 	}
 
 	public String getValue() {
