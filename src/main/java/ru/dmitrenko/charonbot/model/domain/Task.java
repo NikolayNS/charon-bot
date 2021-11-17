@@ -23,8 +23,8 @@ import java.time.Instant;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, exclude = "person")
+@EqualsAndHashCode(callSuper = true, exclude = "person")
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 @Table(name = "task")
 public class Task extends BaseEntity {

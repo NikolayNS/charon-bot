@@ -8,17 +8,18 @@ CREATE TYPE party_status AS ENUM('STALKER', 'MILITARY', 'DUTY', 'FREEDOM', 'BAND
 
 CREATE TABLE IF NOT EXISTS person
 (
-    id          uuid          not null
+    id           uuid          not null
         constraint person_pkey
             primary key,
-    steamId     varchar       not null,
-    name        varchar       not null,
-    nickname    varchar,
-    description varchar       not null,
-    status      person_status not null,
-    print_link  varchar       not null,
-    created     timestamp     not null,
-    updated     timestamp     not null
+    steamId      bigint        not null,
+    name         varchar       not null,
+    nickname     varchar,
+    description  varchar       not null,
+    status       person_status not null,
+    print_link   varchar       not null,
+    cash_account bigint,
+    created      timestamp     not null,
+    updated      timestamp     not null
 );
 
 CREATE TABLE IF NOT EXISTS task

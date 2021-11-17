@@ -24,14 +24,14 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, exclude = "tasks")
+@EqualsAndHashCode(callSuper = true, exclude = "tasks")
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 @Table(name = "person")
 public class Person extends BaseEntity {
 
 	@Column(name = "steam_id", nullable = false)
-	private String steamId;
+	private Long steamId;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -54,6 +54,9 @@ public class Person extends BaseEntity {
 
 	@Column(name = "print_link", nullable = false)
 	private String printLink;
+
+	@Column(name = "cash_account")
+	private Long cashAccount;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
 	private Set<Task> tasks = new HashSet<>();
