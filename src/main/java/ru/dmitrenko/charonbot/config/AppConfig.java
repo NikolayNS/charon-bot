@@ -1,13 +1,16 @@
 package ru.dmitrenko.charonbot.config;
 
 import lombok.RequiredArgsConstructor;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.dmitrenko.charonbot.listener.PersonListener;
+
+import javax.security.auth.login.LoginException;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -16,15 +19,12 @@ public class AppConfig {
 	@Value("${application.token}")
 	private String token;
 
-	private final PersonListener personListener;
-
 	@Bean
-	@ConfigurationProperties(value = "discord-api")
-	public DiscordApi discordApi() {
-		return new DiscordApiBuilder()
-			.addListener(personListener)
-			.setToken(token)
-			.login()
-			.join();
+	public JDA jda(List<ListenerAdapter> listenerAdapters) throws LoginException {
+		return JDABuilder
+			.createDefault(token)
+			.addEventListeners(listenerAdapters)
+			.setActivity(Activity.listening("!help"))
+			.build();
 	}
 }

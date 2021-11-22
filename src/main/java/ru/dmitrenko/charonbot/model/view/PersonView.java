@@ -1,9 +1,9 @@
 package ru.dmitrenko.charonbot.model.view;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.math.BigInteger;
 import java.time.Instant;
 import java.util.List;
 
@@ -17,7 +17,9 @@ public class PersonView {
 	private String personStatus;
 	private String partyStatus;
 	private String printLink;
-	private BigInteger cashAccount;
+	private Long cashAccount;
 	private List<TaskView> tasks;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC+3")
 	private Instant created;
 }

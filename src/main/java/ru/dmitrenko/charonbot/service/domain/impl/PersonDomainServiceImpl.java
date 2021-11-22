@@ -3,7 +3,7 @@ package ru.dmitrenko.charonbot.service.domain.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.dmitrenko.charonbot.mapper.impl.PersonMapper;
+import ru.dmitrenko.charonbot.mapper.impl.PersonMapperImpl;
 import ru.dmitrenko.charonbot.model.domain.PartyStatus;
 import ru.dmitrenko.charonbot.model.domain.Person;
 import ru.dmitrenko.charonbot.model.domain.PersonStatus;
@@ -23,7 +23,7 @@ public class PersonDomainServiceImpl implements PersonDomainService {
 
 	private final PersonRepository personRepository;
 
-	private final PersonMapper personMapper;
+	private final PersonMapperImpl personMapper;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -31,10 +31,10 @@ public class PersonDomainServiceImpl implements PersonDomainService {
 		if (personRepository.findBySteamId(request.getSteamId()).isPresent())
 			throw new EntityExistsException(String.format("Person with steamId [%s] already exist", request.getSteamId()));
 
-		var person = personMapper.requestToPerson(request);
+		var person = personMapper.toEntity(request);
 		person = personRepository.saveAndFlush(person);
 
-		return personMapper.personToView(person);
+		return personMapper.toView(person);
 	}
 
 	@Override
@@ -42,10 +42,10 @@ public class PersonDomainServiceImpl implements PersonDomainService {
 	public PersonView update(PersonRequest request) {
 		var person = getPerson(request.getSteamId());
 
-		person = personMapper.mergeRequestToPerson(person, request);
+		person = personMapper.merge(person, request);
 		person = personRepository.saveAndFlush(person);
 
-		return personMapper.personToView(person);
+		return personMapper.toView(person);
 	}
 
 	private Person getPerson(Long steamId) {
@@ -75,25 +75,25 @@ public class PersonDomainServiceImpl implements PersonDomainService {
 	@Override
 	@Transactional(readOnly = true)
 	public PersonView getBySteamId(Long steamId) {
-		return personMapper.personToView(getPerson(steamId));
+		return personMapper.toView(getPerson(steamId));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<PersonView> getAllByNickname(String nickname) {
-		return personMapper.personsToViews(personRepository.findAllByNickname(nickname));
+		return personMapper.toViews(personRepository.findAllByNickname(nickname));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<PersonView> getAllByPersonStatus(PersonStatus personStatus) {
-		return personMapper.personsToViews(personRepository.findAllByPersonStatus(personStatus));
+		return personMapper.toViews(personRepository.findAllByPersonStatus(personStatus));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<PersonView> getAllByPartyStatus(PartyStatus partyStatus) {
-		return personMapper.personsToViews(personRepository.findAllByPartyStatus(partyStatus));
+		return personMapper.toViews(personRepository.findAllByPartyStatus(partyStatus));
 	}
 
 	@Override
