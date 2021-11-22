@@ -5,6 +5,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Constant {
 
+	public static final String CHARON = "!charon";
+
 	public static final String ADD_PERSON = "!addPerson";
 	public static final String UPDATE_PERSON = "!updatePerson";
 	public static final String UPDATE_CASH_ACCOUNT = "!updateCashAccount";
